@@ -1,0 +1,56 @@
+# ============================================
+# Docker Compose — Jitterbit Order API
+# Sobe API + PostgreSQL com um único comando:
+#   docker-compose up
+# ============================================
+
+version: '3.8'
+
+services:
+  # Banco de dados PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: jitterbit-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-jitterbit_orders}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API Node.js
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jitterbit-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-jitterbit_orders}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      JWT_SECRET: ${JWT_SECRET:-jitterbit_secret_key_docker_2026}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
+    ports:
+      - "${PORT:-3000}:3000"
+
+# Volume persistente para dados do PostgreSQL
+volumes:
+  postgres_data:
+    driver: local
