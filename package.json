@@ -1,0 +1,43 @@
+{
+  "name": "jitterbit-order-api",
+  "version": "1.0.0",
+  "description": "API REST para gerenciamento de pedidos — Teste Técnico Jitterbit",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "jest --verbose --forceExit --detectOpenHandles",
+    "test:coverage": "jest --coverage --verbose --forceExit --detectOpenHandles",
+    "db:init": "node src/config/initDb.js"
+  },
+  "keywords": [
+    "jitterbit",
+    "api",
+    "orders",
+    "express",
+    "postgresql",
+    "jwt"
+  ],
+  "author": "Vinicius (viniciuslks7) <vinicius.oliveiratwt@gmail.com>",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.3.0",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.20.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
+  }
+}
