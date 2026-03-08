@@ -102,6 +102,29 @@ app.get('/health', async (req, res) => {
   }
 });
 
+// Rota raiz — informações da API e redirecionamento para docs
+app.get('/', (req, res) => {
+  return res.status(200).json({
+    success: true,
+    data: {
+      name: 'Jitterbit Order API',
+      version: '1.0.0',
+      description: 'API REST para gerenciamento de pedidos — Teste Técnico Jitterbit',
+      docs: '/api-docs',
+      health: '/health',
+      endpoints: {
+        auth: 'POST /auth/login',
+        createOrder: 'POST /order',
+        listOrders: 'GET /order/list',
+        getOrder: 'GET /order/:orderId',
+        updateOrder: 'PUT /order/:orderId',
+        deleteOrder: 'DELETE /order/:orderId'
+      }
+    },
+    message: 'Bem-vindo à Jitterbit Order API! Acesse /api-docs para documentação interativa.'
+  });
+});
+
 // Rotas de autenticação (públicas)
 app.use('/auth', authRoutes);
 
