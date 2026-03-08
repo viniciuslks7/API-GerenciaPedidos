@@ -24,8 +24,8 @@ A forma mais simples de rodar o projeto:
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/viniciuslks7/jitterbit-order-api.git
-cd jitterbit-order-api
+git clone https://github.com/viniciuslks7/API-GerenciaPedidos.git
+cd API-GerenciaPedidos
 
 # 2. Copie o arquivo de variáveis de ambiente
 cp .env.example .env
@@ -56,8 +56,8 @@ docker-compose down -v
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/viniciuslks7/jitterbit-order-api.git
-cd jitterbit-order-api
+git clone https://github.com/viniciuslks7/API-GerenciaPedidos.git
+cd API-GerenciaPedidos
 ```
 
 ### 2. Instale as dependências

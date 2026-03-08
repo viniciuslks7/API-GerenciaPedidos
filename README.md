@@ -41,8 +41,8 @@ API REST completa para **criar, listar, atualizar e deletar pedidos** com:
 ### Com Docker (recomendado)
 
 ```bash
-git clone https://github.com/viniciuslks7/jitterbit-order-api.git
-cd jitterbit-order-api
+git clone https://github.com/viniciuslks7/API-GerenciaPedidos.git
+cd API-GerenciaPedidos
 cp .env.example .env
 docker-compose up
 ```
@@ -50,8 +50,8 @@ docker-compose up
 ### Sem Docker
 
 ```bash
-git clone https://github.com/viniciuslks7/jitterbit-order-api.git
-cd jitterbit-order-api
+git clone https://github.com/viniciuslks7/API-GerenciaPedidos.git
+cd API-GerenciaPedidos
 npm install
 cp .env.example .env
 # Configure o .env com suas credenciais do PostgreSQL

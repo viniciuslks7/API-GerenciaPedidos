@@ -15,7 +15,7 @@
 | **Stack**        | Node.js, Express.js, PostgreSQL, JWT, Swagger, Jest      |
 | **Linguagem**    | JavaScript (ES6+)                                        |
 | **Porta padrão** | `3000`                                                   |
-| **Repositório**  | `github.com/viniciuslks7/jitterbit-order-api`            |
+| **Repositório**  | `github.com/viniciuslks7/API-GerenciaPedidos`            |
 | **Responsável**  | Vinicius (`viniciuslks7` / `vinicius.oliveiratwt@gmail.com`) |
 
 ---
