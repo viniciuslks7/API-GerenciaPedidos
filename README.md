@@ -70,14 +70,14 @@ npm run dev
 
 | Método | Rota | Descrição | Auth |
 |--------|------|-----------|------|
-| `POST` | `/auth/login` | Obter token JWT | ❌ |
-| `POST` | `/order` | Criar pedido | ✅ |
-| `GET` | `/order/list` | Listar todos os pedidos | ✅ |
-| `GET` | `/order/:orderId` | Obter pedido por ID | ✅ |
-| `PUT` | `/order/:orderId` | Atualizar pedido | ✅ |
-| `DELETE` | `/order/:orderId` | Deletar pedido | ✅ |
-| `GET` | `/health` | Health check | ❌ |
-| `GET` | `/api-docs` | Swagger UI | ❌ |
+| `POST` | `/auth/login` | Obter token JWT | Pública |
+| `POST` | `/order` | Criar pedido | JWT |
+| `GET` | `/order/list` | Listar todos os pedidos | JWT |
+| `GET` | `/order/:orderId` | Obter pedido por ID | JWT |
+| `PUT` | `/order/:orderId` | Atualizar pedido | JWT |
+| `DELETE` | `/order/:orderId` | Deletar pedido | JWT |
+| `GET` | `/health` | Health check | Pública |
+| `GET` | `/api-docs` | Swagger UI | Pública |
 
 ---
 
