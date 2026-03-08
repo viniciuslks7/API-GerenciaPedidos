@@ -76,7 +76,7 @@ Edite o arquivo `.env` com as credenciais do seu PostgreSQL local:
 
 ```env
 DB_HOST=localhost
-DB_PORT=5432
+DB_PORT=5433
 DB_NAME=jitterbit_orders
 DB_USER=postgres
 DB_PASSWORD=sua_senha_aqui
