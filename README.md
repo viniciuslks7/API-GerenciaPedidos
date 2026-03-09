@@ -44,7 +44,26 @@ API REST completa para **criar, listar, atualizar e deletar pedidos** com:
 git clone https://github.com/viniciuslks7/API-GerenciaPedidos.git
 cd API-GerenciaPedidos
 cp .env.example .env
-docker-compose up
+docker-compose up --build -d
+```
+
+#### Variações do comando Docker
+
+| Comando | O que faz |
+|---------|-----------|
+| `docker-compose up` | Sobe os containers (sem rebuildar a imagem) |
+| `docker-compose up --build` | Força o rebuild da imagem antes de subir |
+| `docker-compose up -d` | Sobe em background (detached), libera o terminal |
+| `docker-compose up --build -d` | Faz rebuild e sobe em background ✅ **recomendado** |
+
+Para acompanhar os logs após subir em background:
+```bash
+docker-compose logs -f
+```
+
+Para parar os containers:
+```bash
+docker-compose down
 ```
 
 ### Sem Docker
