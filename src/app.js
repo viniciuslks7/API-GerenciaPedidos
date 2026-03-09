@@ -25,6 +25,9 @@ const swaggerSpec = require('./swagger/swagger');
 // Importação do banco de dados (para health check)
 const { query } = require('./config/database');
 
+// Importação do script de inicialização do banco
+const { initDatabase } = require('./config/initDb');
+
 // Inicialização do app Express
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,8 +49,8 @@ app.use(cors({
 // Compressão — otimiza tamanho das respostas HTTP
 app.use(compression());
 
-// Parser JSON — interpreta body das requisições como JSON
-app.use(express.json());
+// Parser JSON — interpreta body das requisições como JSON (limite de 2mb para payloads grandes)
+app.use(express.json({ limit: '2mb' }));
 
 // Rate Limiting — proteção contra abuso (100 requests por 15 min por IP)
 const limiter = rateLimit({
@@ -153,6 +156,10 @@ app.use(errorHandler);
 
 // Inicia o servidor apenas se não estiver em ambiente de teste
 if (process.env.NODE_ENV !== 'test') {
+  (async () => {
+  // Inicializa o banco de dados automaticamente (cria tabelas e usuário admin)
+  await initDatabase();
+
   const server = app.listen(PORT, () => {
     console.log('============================================');
     console.log(`  🚀 Jitterbit Order API`);
@@ -179,6 +186,7 @@ if (process.env.NODE_ENV !== 'test') {
 
   process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
   process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+  })();
 }
 
 // Exporta o app para uso nos testes (supertest)

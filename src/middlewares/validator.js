@@ -16,13 +16,17 @@ const orderValidationRules = [
     .notEmpty()
     .withMessage('O campo numeroPedido é obrigatório')
     .isString()
-    .withMessage('O campo numeroPedido deve ser uma string'),
+    .withMessage('O campo numeroPedido deve ser uma string')
+    .isLength({ max: 100 })
+    .withMessage('O campo numeroPedido deve ter no máximo 100 caracteres'),
 
   body('valorTotal')
     .notEmpty()
     .withMessage('O campo valorTotal é obrigatório')
     .isNumeric()
-    .withMessage('O campo valorTotal deve ser um número'),
+    .withMessage('O campo valorTotal deve ser um número')
+    .isFloat({ max: 9999999999.99 })
+    .withMessage('O campo valorTotal excede o limite máximo permitido (9999999999.99)'),
 
   body('dataCriacao')
     .notEmpty()
@@ -49,6 +53,8 @@ const orderValidationRules = [
     .withMessage('O campo valorItem é obrigatório em cada item')
     .isNumeric()
     .withMessage('O campo valorItem deve ser um número')
+    .isFloat({ max: 9999999999.99 })
+    .withMessage('O campo valorItem excede o limite máximo permitido (9999999999.99)')
 ];
 
 /**

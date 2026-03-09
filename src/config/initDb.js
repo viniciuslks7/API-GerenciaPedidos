@@ -70,14 +70,13 @@ const initDatabase = async () => {
   } catch (error) {
     console.error('[DB:Init] Erro ao inicializar banco de dados:', error.message);
     throw error;
-  } finally {
-    await pool.end();
   }
 };
 
 // Executa apenas quando chamado diretamente (npm run db:init)
 if (require.main === module) {
   initDatabase()
+    .then(() => pool.end())
     .then(() => process.exit(0))
     .catch(() => process.exit(1));
 }
