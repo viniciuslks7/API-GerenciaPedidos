@@ -5,8 +5,18 @@
 
 Write-Host "`n=== INICIANDO TESTES DE EDGE CASES ===" -ForegroundColor Cyan
 
-# Token válido
-$token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3NzI5NDAwODIsImV4cCI6MTc3MzAyNjQ4Mn0.zJ2eKoZLQOUUesD3x7nOFUbSGE6NgyW8BE_opS5QRNc"
+# Obtém token JWT fresco via login
+Write-Host "`n[SETUP] Obtendo token JWT..." -ForegroundColor Gray
+try {
+    $loginBody = '{"username":"admin","password":"admin123"}'
+    $loginResult = Invoke-WebRequest -Uri "http://localhost:3000/auth/login" -Method POST -Body $loginBody -Headers @{ "Content-Type" = "application/json" } -UseBasicParsing
+    $token = ($loginResult.Content | ConvertFrom-Json).data.token
+    Write-Host "[SETUP] Token obtido com sucesso!" -ForegroundColor Green
+} catch {
+    Write-Host "[SETUP] ERRO: Não foi possível obter token. Servidor rodando?" -ForegroundColor Red
+    exit 1
+}
+
 $baseUrl = "http://localhost:3000"
 $headers = @{ Authorization = "Bearer $token"; "Content-Type" = "application/json" }
 
@@ -38,6 +48,16 @@ function Test-Case {
 # 1. VALIDAÇÕES DE ENTRADA
 # ==========================================
 Write-Host "`n=== 1. VALIDAÇÕES DE ENTRADA ===" -ForegroundColor Magenta
+
+# Limpeza de dados de testes anteriores
+Write-Host "`n[CLEANUP] Removendo pedidos de testes anteriores..." -ForegroundColor Gray
+$testOrderIds = @("EMPTY-001","NEG-001","ZERO-001","NO-ITEMS-001","TYPE-001","'; DROP TABLE orders; --","SPECIAL-<>&%","EMOJI-😀🚀⭐","BIGNUM-001","DECIMAL-001","BADDATE-001","FUTURE-001","DUP-001","MANY-ITEMS-001")
+foreach ($id in $testOrderIds) {
+    try {
+        Invoke-WebRequest -Uri "$baseUrl/order/$id" -Method DELETE -Headers $headers -UseBasicParsing -ErrorAction SilentlyContinue | Out-Null
+    } catch { }
+}
+Write-Host "[CLEANUP] Limpeza concluída!" -ForegroundColor Green
 
 Test-Case "1.1 - Pedido com array de items vazio" {
     $data = @{
@@ -178,7 +198,7 @@ Test-Case "5.1 - Valor muito grande (overflow)" {
         items = @( @{ idItem = "1"; quantidadeItem = 999999; valorItem = 99999999999999 } )
     } | ConvertTo-Json
     Invoke-WebRequest -Uri "$baseUrl/order" -Method POST -Body $data -Headers $headers -UseBasicParsing
-} -ExpectedStatus "success"
+} -ExpectedStatus "error"
 
 Test-Case "5.2 - Valor decimal com muitas casas" {
     $data = @{
@@ -203,7 +223,7 @@ Test-Case "6.1 - Data inválida" {
         items = @( @{ idItem = "1"; quantidadeItem = 1; valorItem = 1000 } )
     } | ConvertTo-Json
     Invoke-WebRequest -Uri "$baseUrl/order" -Method POST -Body $data -Headers $headers -UseBasicParsing
-} -ExpectedStatus "success"
+} -ExpectedStatus "error"
 
 Test-Case "6.2 - Data futura distante (ano 2099)" {
     $data = @{

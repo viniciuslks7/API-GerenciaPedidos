@@ -32,7 +32,14 @@ const orderValidationRules = [
     .notEmpty()
     .withMessage('O campo dataCriacao é obrigatório')
     .isString()
-    .withMessage('O campo dataCriacao deve ser uma string de data válida'),
+    .withMessage('O campo dataCriacao deve ser uma string de data válida')
+    .custom((value) => {
+      const date = new Date(value);
+      if (isNaN(date.getTime())) {
+        throw new Error('O campo dataCriacao deve ser uma data válida (formato ISO 8601)');
+      }
+      return true;
+    }),
 
   body('items')
     .isArray({ min: 1 })
